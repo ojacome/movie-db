@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CarteleraResponse, Movie } from '../interfaces/cartelera-response'
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { MovieDetails } from '../interfaces/movie-response';
+import { CreditsResponse } from '../interfaces/credits-response';
 const base_url = 'https://api.themoviedb.org/3';
 const key = environment.MOVIE_API_KEY;
 
@@ -64,7 +65,19 @@ export class PeliculasService {
   getPelicula( id: string ){
     let url = `${base_url}/movie/${id}`;
 
-    return this.http.get<MovieDetails>( url, { params: this.params })    
+    return this.http.get<MovieDetails>( url, { params: this.params })  
+    .pipe(
+      catchError( err => of(null) )
+    )  
+  }
 
+  getCats( id: string ){
+    let url = `${base_url}/movie/${id}/credits`;
+
+    return this.http.get<CreditsResponse>( url, { params: this.params })   
+    .pipe( 
+      map( res => res.cast ), 
+      catchError( err => of([]) )      
+    )
   }
 }
