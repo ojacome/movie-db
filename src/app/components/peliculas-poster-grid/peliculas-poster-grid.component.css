@@ -1,7 +1,11 @@
 .poster {
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.5);
-    margin: 5px;
+    margin: 5px;    
+}
+
+.poster:hover{
+    cursor: pointer;
 }
 
 h3{

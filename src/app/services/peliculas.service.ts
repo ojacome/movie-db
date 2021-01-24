@@ -4,6 +4,7 @@ import { CarteleraResponse, Movie } from '../interfaces/cartelera-response'
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { MovieDetails } from '../interfaces/movie-response';
 const base_url = 'https://api.themoviedb.org/3';
 const key = environment.MOVIE_API_KEY;
 
@@ -58,5 +59,12 @@ export class PeliculasService {
 
   resetPage(){
     this.carteleraPage = 1;
+  }
+
+  getPelicula( id: string ){
+    let url = `${base_url}/movie/${id}`;
+
+    return this.http.get<MovieDetails>( url, { params: this.params })    
+
   }
 }

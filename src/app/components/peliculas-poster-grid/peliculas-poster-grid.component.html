@@ -1,6 +1,10 @@
 <div class="row">
     <div class="col-md-3 mb-5" *ngFor="let m of movies">
-        <img [src]="m.poster_path | poster" [alt]="m.title" class="img-fluid poster">
+        <img 
+        [src]="m.poster_path | poster" 
+        [alt]="m.title" 
+        [routerLink]="['/pelicula', m.id]" 
+        class="img-fluid poster">
 
         <div>
             <h3>{{ m.title }}</h3>
