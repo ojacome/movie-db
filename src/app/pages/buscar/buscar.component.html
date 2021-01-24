@@ -1,1 +1,15 @@
-<p>buscar works!</p>
+<h2>Buscar películas <small>{{texto}}</small></h2>
+<hr>
+<div *ngIf="cargando" class="alert alert-info" role="alert">
+    <br>
+    Espere, por favor...
+</div>
+
+<div class="row">
+    <div class="col">
+        <app-peliculas-poster-grid 
+        *ngIf="movies.length >0"
+        [movies]="movies">
+        </app-peliculas-poster-grid>
+    </div>
+</div>

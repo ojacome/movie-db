@@ -46,4 +46,17 @@ export class PeliculasService {
       } )
     )
   }
+
+  buscar( query : string) {
+    let url = `${base_url}/search/movie`;
+    const params = { ...this.params, page: '1', query };
+    return this.http.get<CarteleraResponse>(url, { params} )
+    .pipe( 
+      map( res => res.results)
+    )
+  }
+
+  resetPage(){
+    this.carteleraPage = 1;
+  }
 }
