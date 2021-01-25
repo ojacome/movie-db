@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { Cast } from 'src/app/interfaces/credits-response';
 import { MovieDetails } from 'src/app/interfaces/movie-response';
 import { PeliculasService } from 'src/app/services/peliculas.service';
@@ -11,7 +12,7 @@ import { PeliculasService } from 'src/app/services/peliculas.service';
   styles: [
   ]
 })
-export class PeliculaComponent implements OnInit {
+export class PeliculaComponent {
 
   movie: MovieDetails;
   cast : Cast[] = [];
@@ -26,29 +27,22 @@ export class PeliculaComponent implements OnInit {
 
     const { id } = this.route.snapshot.params;
   
-    this.peliculaSvc.getPelicula( id )
-    .subscribe( res => {
-      if( !res ){
+    combineLatest([
+      this.peliculaSvc.getPelicula( id ),
+      this.peliculaSvc.getCats( id)
+    ])
+    .subscribe( ([movie, cast]) => {
+      if( !movie ){
         this.router.navigateByUrl('/');
         return;
-      }
-
-      this.movie = res      
-    } )
-
-    this.cargarCats(id);
+      }      
+      this.movie = movie;
+      this.cast = cast;
+    })        
   }
-
-  ngOnInit(): void {
-  }
-
 
   regresar(){
     this.location.back();
   }
 
-  cargarCats(id : string){
-    this.peliculaSvc.getCats( id)
-    .subscribe( res => this.cast = res )
-  }
 }
